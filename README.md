@@ -58,5 +58,5 @@ You must change the 'webRconEnabled' and 'webRconKey' values:
 	{"port": 8080, "ServerName": "ProjectGE PSO2Proxy Server", 'webRconEnabled': True, 'webRconKey': 'enter a key here'}
 ```
 
-Change 'webRconEnabled' to True and set any key in the 'webRconKey'
-You must treat the 'webRconKey' as you would a password. It will stop any commands from being run by unauthorised users.
+Change 'webRconEnabled' to <b>True</b> and set any key in the 'webRconKey'
+<b>You must treat the 'webRconKey' as you would a password.</b> It will stop any commands from being run by unauthorised users.
