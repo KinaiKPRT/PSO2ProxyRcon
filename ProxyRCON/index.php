@@ -25,8 +25,11 @@
 				//Send Command
 				try
 				{
-					$output = file_get_contents("http://".$settings['host'].":".$settings['port']."/rcon?key=".$settings['rkey']."&command=".$command."&params=".$_POST['command_args']);
+					$url = htmlentities("http://".$settings['host'].":".$settings['port']."/rcon?key=".$settings['rkey']."&command=".$command."&params=".$_POST['command_args']);
+					$url = str_replace(" ", "%20", $url);
+					$output = file_get_contents($url);
 					$output = json_decode($output, true);
+					
 				}
 				catch(Exception $e)
 				{
