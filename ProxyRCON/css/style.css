@@ -1,0 +1,91 @@
+html{
+	font-family:Arial;
+	font-size:16px;
+	color:#000;
+}
+
+#button{
+	display: inline;
+	
+	text-transform: uppercase;
+	text-decoration: none;
+	color: #FFF;
+	
+	background: #474747;
+	
+	border-bottom: 3px solid #333;
+
+	padding: 5px;
+
+	-webkit-transition: all .5s ease;
+	-moz-transition: all .5s ease;
+	-o-transition: all .5s ease;
+	-ms-transition: all .5s ease;
+	transition: all .5s ease;
+}
+#button:hover{
+	background: #664ea1;
+	
+	border-bottom: 3px solid #333;
+
+	-webkit-transition: all .5s ease;
+	-moz-transition: all .5s ease;
+	-o-transition: all .5s ease;
+	-ms-transition: all .5s ease;
+	transition: all .5s ease;
+}
+
+#title{
+	border-bottom: 1px solid #000;
+
+	font-size: 10px;
+
+	text-transform: uppercase;
+}
+
+#container{
+	margin-top:32px;
+	width:475px;
+	
+	border-radius:5px;
+	padding:20px;
+
+	background:#EEE;
+	border: 1px solid #EEE;
+
+	-webkit-transition: all .5s ease;
+	-moz-transition: all .5s ease;
+	-o-transition: all .5s ease;
+	-ms-transition: all .5s ease;
+	transition: all .5s ease;
+}
+#container:hover{
+	border: 1px solid #333;
+
+	-webkit-transition: all .5s ease;
+	-moz-transition: all .5s ease;
+	-o-transition: all .5s ease;
+	-ms-transition: all .5s ease;
+	transition: all .5s ease;
+}
+
+.error{
+	position:fixed;
+	top:0;
+	left:0;
+
+	height:20px;
+	width:100%;
+
+	background:red;
+}
+.announcement{
+	position:fixed;
+	bottom:0;
+	left:0;
+
+	width:100%;
+
+	color:#000;
+	background:#EEE;
+}
