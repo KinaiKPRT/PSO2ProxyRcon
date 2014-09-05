@@ -2,6 +2,7 @@ WebRCON for PSO2Proxy
 =============
 
 This script will allow you to utilise the WebRCON support that the PSO2Proxy provides.
+<p>
 You will be able to use commands from any phone with Internet access.
 
 Installation
@@ -28,8 +29,11 @@ You will need to change the below variables to connect to your proxy:
 ```
 
 $settings['host']: Your proxy IP address or host name.
+<p>
 $settings['port']: Your proxy webAPI port. (Default: 8080)
+<p>
 $settings['rkey']: Your WebRCON key.
+
 
 Only change $settings['commandPrefix'] if you have set a different prefix on your proxy.
 
