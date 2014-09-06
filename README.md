@@ -89,7 +89,7 @@ Change the following variable:
 
 To:
 ```
-	settings['showInfo'] = true;
+	$settings['showInfo'] = true;
 ```
 
 When you open the WebRCON, you will see a new container below the console with all the information pulled from your proxy.
