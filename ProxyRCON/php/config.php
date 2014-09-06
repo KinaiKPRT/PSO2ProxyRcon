@@ -22,7 +22,7 @@
 		General
 	**********************************************************/
 	$author = "Ashley (XenoWarrior)";
-	$version = "1";
+	$version = "2";
 
 	/**********************************************************
 		Set timezone and custom error handler
