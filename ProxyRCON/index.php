@@ -60,12 +60,16 @@
 			else
 			{
 				$output = $connection;
-				$server = file_get_contents("http://".$settings['host'].":".$settings['port']);
-				$config = file_get_contents("http://".$settings['host'].":".$settings['port']."/config.json");
-				
 				$_SESSION['correctKey'] = true;
-				$_SESSION['serverInfo'] = json_decode($server, true);
-				$_SESSION['serverConfig'] = json_decode($config, true);
+
+				if($settings['showInfo'])
+				{
+					$server = file_get_contents("http://".$settings['host'].":".$settings['port']);
+					$config = file_get_contents("http://".$settings['host'].":".$settings['port']."/config.json");
+					
+					$_SESSION['serverInfo'] = json_decode($server, true);
+					$_SESSION['serverConfig'] = json_decode($config, true);
+				}
 			}
 		}
 		catch(Exception $e)
@@ -168,7 +172,7 @@
 											</a>
 										</td>
 										<td>
-											<a target="_BLANK" style="text-decoration:none;" href="https://github.com/XenoWarrior/PSO2ProxyRcon">
+											<a target="_BLANK" style="text-decoration:none;" href="https://github.com/CyberKitsune/PSO2Proxy">
 												<div id="button">
 													Proxy GitHub
 												</div>
@@ -222,21 +226,91 @@
 									<input name="command_send" type="submit" value="Execute"/>
 								</form>
 							</div>
-							<div id="container">
-								<div id="title">Server Information</div>
-								<div style="text-aling:left;">
+							<?php 
+								if($settings['showInfo'])
+								{ ?>
+									<div id="container">
+										<div id="title">Server Information</div>
+										<div style="text-align:left;">
+											<?php
+												echo(
+													"<table>".
+														"<tr>".
+															"<td>".
+																"<b>Server Name</b>".
+															"</td>".
+															"<td>".
+																"<input class='serverInfo' type='text' value='".$_SESSION['serverConfig']['name']."' />".
+															"</td>".
+														"</tr>".
+														"<tr style='height:12px;'></tr>".
+														"<tr>".
+															"<td>".
+																"<b>Host</b>".
+															"</td>".
+															"<td>".
+																"<input class='serverInfo' type='text' value='".$settings['host']."' />".
+															"</td>".
+														"</tr>".
+														"<tr>".
+															"<td>".
+																"<b>Port</b>".
+															"</td>".
+															"<td>".
+																"<input class='serverInfo' type='text' value='".$settings['port']."' />".
+															"</td>".
+														"</tr>".
+														"<tr style='height:12px;'></tr>".
+														"<tr>".
+															"<td>".
+																"<b>Live Since</b>".
+															"</td>".
+															"<td>".
+																"<input class='serverInfo' type='text' value='".date('d/m/y h:i A', $_SESSION['serverInfo']['upSince'])."' />".
+															"</td>".
+														"</tr>".
+														"<tr>".
+															"<td>".
+																"<b>Connected Players</b>".
+															"</td>".
+															"<td>".
+																"<input class='serverInfo' type='text' value='".$_SESSION['serverInfo']['playerCount']."' />".
+															"</td>".
+														"</tr>".
+														"<tr style='height:12px;'></tr>".
+														"<tr>".
+															"<td>".
+																"<b>Peak Players</b>".
+															"</td>".
+															"<td>".
+																"<input class='serverInfo' type='text' value='".$_SESSION['serverInfo']['peakPlayers']."' />".
+															"</td>".
+														"</tr>".
+														"<tr>".
+															"<td>".
+																"<b>Players Cached</b>".
+															"</td>".
+															"<td>".
+																"<input class='serverInfo' type='text' value='".$_SESSION['serverInfo']['playersCached']."' />".
+															"</td>".
+														"</tr>".
+														"<tr style='height:12px;'></tr>".
+														"<tr>".
+															"<td>".
+																"<b>Blocks Cached</b>".
+															"</td>".
+															"<td>".
+																"<input class='serverInfo' type='text' value='".$_SESSION['serverInfo']['blocksCached']."' />".
+															"</td>".
+														"</tr>".
+													"</table>"
+												);
+											?>
+										</div>
+									</div>
 									<?php
-										echo(
-											"<br>Server Name: ".$_SESSION['serverConfig']['name'].
-											"<br>Host = ".$settings['host'].
-											"<br>Port = ".$settings['port'].
-											"<br>".
-											"<br>Live Since: ".date('d/m/y h:i A', $_SESSION['serverInfo']['upSince']).
-											"<br>Connected Players: ".$_SESSION['serverInfo']['playerCount']
-										);
-									?>
-								</div>
-							</div>
+								}
+							?>
 						</center>
 						<?php
 					}
