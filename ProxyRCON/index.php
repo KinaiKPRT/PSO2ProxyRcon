@@ -191,7 +191,7 @@
 							<div id="container">
 								<div id="title">Console Output</div>
 								<br>
-								<div style="text-align:left;">
+								<div style="text-align:left;overflow:auto;">
 									<?php
 										$exception = "<br>,<SegaID/PlayerID>,<value>,<Message>";
 										if(isset($output['reason']))
