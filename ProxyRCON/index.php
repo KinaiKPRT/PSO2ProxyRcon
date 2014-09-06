@@ -81,9 +81,7 @@
 	if(isset($_GET['logout']))
 	{
 		session_destroy();
-		
 		unset($_SESSION);
-
 		header("Location: ./");
 	}
 
@@ -189,39 +187,30 @@
 							<div id="container">
 								<div id="title">Console Output</div>
 								<br>
-								<?php 
-									//var_dump($output);
-									if(isset($output['reason']))
-									{
-										if($output['reason']=="Command not specified.")
+								<div style="text-align:left;">
+									<?php
+										$exception = "<br>,<SegaID/PlayerID>,<value>,<Message>";
+										if(isset($output['reason']))
 										{
-											$output['reason'] = "Ready.";
-											$output['success'] = 1;
-											echo($output['reason']);
+											if($output['reason']=="Command not specified.")
+											{
+												$string = "Type your command below.";
+											}
+											else
+											{
+												$string = $output['reason'];
+												$string = str_replace("\n","<br>",$string);
+											}
+											echo("<pre>".htmlentities($output['reason'])."</pre>");
 										}
-										else
+										if(isset($output['output']))
 										{
-											$string = $output['reason'];
+											$string = $output['output'];
 											$string = str_replace("\n","<br>",$string);
-											echo($string);
+											echo("<pre>".htmlentities($output['output'])."</pre>");
 										}
-									}
-									if(isset($output['output']))
-									{
-										$string = $output['output'];
-										$string = str_replace("\n","<br>",$string);
-										echo($string);
-									}
-
-									if($output['success']==true)
-									{
-										echo("<br><font color=\"green\">Success</font>");
-									}
-									else
-									{
-										echo("<br><font color=\"red\">Error</font>");
-									}
-								?>
+									?>
+								</div>
 							</div>
 							<div id="container">
 								<div id="title">Execute Commands</div>
