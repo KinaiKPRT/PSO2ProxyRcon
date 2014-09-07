@@ -43,7 +43,6 @@
 		General
 	**********************************************************/
 	$author = "Ashley (XenoWarrior)";
-	$version = "3";
 
 	/**********************************************************
 		Set timezone and custom error handler
