@@ -2,7 +2,6 @@
 	define("PSO2ProxyRcon", true); // Defined to stop running "includes" directly
 
 	require_once('php/config.php'); // Get the config file
-	require_once('php/functions.php'); // Get the functions file
 
 	session_name("PSO2ProxyRcon"); // Session name
 	if(!isset($_SESSION)) // Check if a session is not running
