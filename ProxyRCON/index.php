@@ -12,6 +12,48 @@
 	/**********************************************************
 		PSO2 Proxy Connection Test
 	**********************************************************/
+
+	// Make sure the session is running
+	if(isset($_SESSION['loggedIn']))
+	{
+		// Check if the user has logged in
+		if($_SESSION['loggedIn']==true)
+		{
+			try // Try to run the code below (Mostly for the file_get_contents function)
+			{
+				// Make simple connection to the server testing the RCON key
+				$connection = file_get_contents("http://".$settings['host'].":".$settings['port']."/rcon?key=".$settings['rkey']);
+				$connection = json_decode($connection, true);
+
+				if($connection['reason']=="Your RCON key is invalid!") // Check if the server returned invalid key message
+				{
+					$error = $connection['reason']; // Sets the error message and help message
+					$help = "You can set your RCON key in the config.php file.<br>Make sure to change <b>settings['rkey']</b> to the key you have set on your proxy.";
+					$_SESSION['correctKey'] = false; // Tells other functions not to connect by setting to false
+				}
+				else // Successful connection
+				{
+					$output = $connection; // Gets the first output from server
+					$_SESSION['correctKey'] = true; // Sets the correctKey to true so login can start running commands
+
+					if($settings['showInfo']) // This can be set in config.php, allows the WebRCON to get information from the server
+					{
+						$server = file_get_contents("http://".$settings['host'].":".$settings['port']); // Server information
+						$config = file_get_contents("http://".$settings['host'].":".$settings['port']."/config.json"); // Config JSON
+						
+						// Pack data into variables
+						$_SESSION['serverInfo'] = json_decode($server, true);
+						$_SESSION['serverConfig'] = json_decode($config, true);
+					}
+				}
+			}
+			catch(Exception $e) // If an error occured, it is most likely HTTP GET request
+			{
+				$error = "Unable to connect to remote server! (".$settings['host'].":".$settings['port'].")";
+				$help = "Please ensure that the host and port have been defined and you have access to the resource.";
+			}
+		}
+	}
 	// Check if there is a POST request and if the session is running
 	if(isset($_POST['command_send']) AND isset($_SESSION) AND isset($_SESSION['correctKey']))
 	{
@@ -46,51 +88,7 @@
 			}
 		}
 	}
-	else
-	{
-		// Make sure the session is running
-		if(isset($_SESSION['loggedIn']))
-		{
-			// Check if the user has logged in
-			if($_SESSION['loggedIn']==true)
-			{
-				try // Try to run the code below (Mostly for the file_get_contents function)
-				{
-					// Make simple connection to the server testing the RCON key
-					$connection = file_get_contents("http://".$settings['host'].":".$settings['port']."/rcon?key=".$settings['rkey']);
-					$connection = json_decode($connection, true);
-
-					if($connection['reason']=="Your RCON key is invalid!") // Check if the server returned invalid key message
-					{
-						$error = $connection['reason']; // Sets the error message and help message
-						$help = "You can set your RCON key in the config.php file.<br>Make sure to change <b>settings['rkey']</b> to the key you have set on your proxy.";
-						$_SESSION['correctKey'] = false; // Tells other functions not to connect by setting to false
-					}
-					else // Successful connection
-					{
-						$output = $connection; // Gets the first output from server
-						$_SESSION['correctKey'] = true; // Sets the correctKey to true so login can start running commands
-
-						if($settings['showInfo']) // This can be set in config.php, allows the WebRCON to get information from the server
-						{
-							$server = file_get_contents("http://".$settings['host'].":".$settings['port']); // Server information
-							$config = file_get_contents("http://".$settings['host'].":".$settings['port']."/config.json"); // Config JSON
-							
-							// Pack data into variables
-							$_SESSION['serverInfo'] = json_decode($server, true);
-							$_SESSION['serverConfig'] = json_decode($config, true);
-						}
-					}
-				}
-				catch(Exception $e) // If an error occured, it is most likely HTTP GET request
-				{
-					$error = "Unable to connect to remote server! (".$settings['host'].":".$settings['port'].")";
-					$help = "Please ensure that the host and port have been defined and you have access to the resource.";
-				}
-			}
-		}
-	}
-
+	
 	/**********************************************************
 		Data submission
 	**********************************************************/
