@@ -13,7 +13,7 @@
 		PSO2 Proxy Connection Test
 	**********************************************************/
 	// Check if there is a POST request and if the session is running
-	if(isset($_POST['command_send']) AND isset($_SESSION))
+	if(isset($_POST['command_send']) AND isset($_SESSION) AND isset($_SESSION['correctKey']))
 	{
 		// Check the POST request, logged in status and key status
 		if($_POST['command_send']=="Execute" AND $_SESSION['loggedIn']==true AND $_SESSION['correctKey']==true)
@@ -64,7 +64,7 @@
 					{
 						$error = $connection['reason']; // Sets the error message and help message
 						$help = "You can set your RCON key in the config.php file.<br>Make sure to change <b>settings['rkey']</b> to the key you have set on your proxy.";
-						$_SESSION['correctKey']=false; // Tells other functions not to connect by setting to false
+						$_SESSION['correctKey'] = false; // Tells other functions not to connect by setting to false
 					}
 					else // Successful connection
 					{
