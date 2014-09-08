@@ -19,7 +19,6 @@
 	$settings['host'] = "host";
 	$settings['port'] = "port";
 	$settings['rkey'] = "proxy_key";
-	$settings['commandPrefix'] = "!";
 
 	/**********************************************************
 		Extra Options
@@ -28,8 +27,12 @@
 			Setting it to false will speed up page load.
 			Setting it to true will display information about
 			the proxy, but may slow down the load speed.
+
+			$settings['wrInfo']:
+			This will display the help message on login.
 	**********************************************************/
 	$settings['showInfo'] = false;
+	$settings['wrInfo'] = true;
 
 	/**********************************************************
 		PSO2 Proxy User Account

@@ -1,7 +1,7 @@
 <?php
 	define("PSO2ProxyRcon", true); // Defined to stop running "includes" directly
 
-	require_once('php/config.php'); // Get the config file
+	require('php/config.php'); // Get the config file
 
 	session_name("PSO2ProxyRcon"); // Session name
 	if(!isset($_SESSION)) // Check if a session is not running
@@ -12,7 +12,6 @@
 	/**********************************************************
 		PSO2 Proxy Connection Test
 	**********************************************************/
-
 	// Make sure the session is running
 	if(isset($_SESSION['loggedIn']))
 	{
@@ -24,27 +23,16 @@
 				// Make simple connection to the server testing the RCON key
 				$connection = file_get_contents("http://".$settings['host'].":".$settings['port']."/rcon?key=".$settings['rkey']);
 				$connection = json_decode($connection, true);
-
+				
 				if($connection['reason']=="Your RCON key is invalid!") // Check if the server returned invalid key message
 				{
 					$error = $connection['reason']; // Sets the error message and help message
 					$help = "You can set your RCON key in the config.php file.<br>Make sure to change <b>settings['rkey']</b> to the key you have set on your proxy.";
 					$_SESSION['correctKey'] = false; // Tells other functions not to connect by setting to false
 				}
-				else // Successful connection
+				else
 				{
-					$output = $connection; // Gets the first output from server
-					$_SESSION['correctKey'] = true; // Sets the correctKey to true so login can start running commands
-
-					if($settings['showInfo']) // This can be set in config.php, allows the WebRCON to get information from the server
-					{
-						$server = file_get_contents("http://".$settings['host'].":".$settings['port']); // Server information
-						$config = file_get_contents("http://".$settings['host'].":".$settings['port']."/config.json"); // Config JSON
-						
-						// Pack data into variables
-						$_SESSION['serverInfo'] = json_decode($server, true);
-						$_SESSION['serverConfig'] = json_decode($config, true);
-					}
+					$_SESSION['correctKey'] = true; // Tells other functions that your key is correct
 				}
 			}
 			catch(Exception $e) // If an error occured, it is most likely HTTP GET request
@@ -106,6 +94,40 @@
 		{
 			if($_POST['username'] == $user['username'] AND $_POST['password'] == $user['password']) // Checks for username and password defined in config.php
 			{
+				try // Try to run the code below (Mostly for the file_get_contents function)
+				{
+					// Make simple connection to the server testing the RCON key
+					$connection = file_get_contents("http://".$settings['host'].":".$settings['port']."/rcon?key=".$settings['rkey']);
+					$connection = json_decode($connection, true);
+
+					if($connection['reason']=="Your RCON key is invalid!") // Check if the server returned invalid key message
+					{
+						$error = $connection['reason']; // Sets the error message and help message
+						$help = "You can set your RCON key in the config.php file.<br>Make sure to change <b>settings['rkey']</b> to the key you have set on your proxy.";
+						$_SESSION['correctKey'] = false; // Tells other functions not to connect by setting to false
+					}
+					else // Successful connection
+					{
+						$output = $connection; // Gets the first output from server
+						$_SESSION['correctKey'] = true; // Sets the correctKey to true so login can start running commands
+
+						if($settings['showInfo']) // This can be set in config.php, allows the WebRCON to get information from the server
+						{
+							$server = file_get_contents("http://".$settings['host'].":".$settings['port']); // Server information
+							$config = file_get_contents("http://".$settings['host'].":".$settings['port']."/config.json"); // Config JSON
+							
+							// Pack data into variables
+							$_SESSION['serverInfo'] = json_decode($server, true);
+							$_SESSION['serverConfig'] = json_decode($config, true);
+						}
+					}
+				}
+				catch(Exception $e) // If an error occured, it is most likely HTTP GET request
+				{
+					$error = "Unable to connect to remote server! (".$settings['host'].":".$settings['port'].")";
+					$help = "Please ensure that the host and port have been defined and you have access to the resource.";
+				}
+
 				$_SESSION['loggedIn'] = true; // Tell the script the user is logged in (this will allow connections to the server now)
 				$_SESSION['username'] = $_POST['username']; // Append the username to the session (will be useful for more than one account)
 
@@ -133,11 +155,12 @@
 			if(isset($error) AND $error!=="") // This will be used to output any error messages
 			{ ?>
 				<center>
-					<div>
-						<span class="error" style="color:#FFF;"><?php echo($error); ?></span>
-						<div style="border-radius:5px;background:#EEE;margin-top:32px;padding:20px;;width:464px;">
-							<?php echo($help); ?>
-						</div>
+					<div id="container">
+						<div id="title">WebRCON Error</div>
+						<br>
+						<?php
+							echo("<font color='red'>".$error."</font><br><br>".$help);
+						?>
 					</div>
 				</center>
 				<?php
@@ -147,16 +170,52 @@
 				if(!isset($_SESSION['loggedIn'])) // Checking if loggedIn is false
 				{ ?>
 					<center>
-						<div style="position:fixed;top:0;left:0;height:20px;width:100%;background:#333;">
-							<span style="color:#FFF;">Please login to continue.</span>
-						</div>
-						<div style="border-radius:5px;background:#EEE;margin-top:32px;padding:20px;;width:464px;">
+						<div id="container">
+							<div id="title">WebRCON Login</div>
+							<br>
 							<form action="" method="post">
-								<input name="username" type="text" placeholder="Enter username here..."/>
-								<input name="password" type="password" placeholder="Enter password here..."/>
-								<input name="submit" type="submit" value="Login"/>
+								<table>
+									<tr>
+										<td>
+											<input id="input" name="username" type="text" placeholder="Enter username here..."/>
+										</td>
+										<td>
+											<input id="input" name="password" type="password" placeholder="Enter password here..."/>
+										</td>
+										<td>
+											<input id="button" name="submit" type="submit" value="Login"/>
+										</td>
+									</tr>
+								</table>
 							</form>
+							<?php 
+								if($user['username'] == "username" AND $user['password'] == "password")
+								{
+									echo("<br><font color='red'>WARNING: You have not changed the default username and password in config.php!</font>");
+								}
+							?>
 						</div>
+						<?php
+							if($settings['wrInfo'])
+							{ ?>
+								<div id="container">
+									<div id="title">WebRCON Information</div>
+									<br>
+									WebRCON is a PSO2Proxy Remote Console. It will allow you to run commands as you would in the console.
+									<br>
+									This page will work on mobile phones and any other device with a browser and Internet connection.
+									<br><br>
+									All commands will show the output generated from the command in the console output container.
+									<br><br>
+									All console commands will work via the WebRCON, including all plugin commands. Use the command [help] to view a list of commands.
+									<br><br>
+									To start, simply login above.
+									<br><br>
+									<font color="grey" size="2">If you want to hide this message, you can disable it in <b>config.php</b> by setting <b>$settings['wrInfo']</b> to <b>false</b>.</font>
+								</div>
+								<?php
+							}
+						?>
 					</center>
 					<?php
 				}
@@ -165,9 +224,6 @@
 					if($_SESSION['loggedIn']==true) // Check if the user is logged in
 					{ ?>
 						<center>
-							<div style="position:fixed;top:0;left:0;height:20px;width:100%;background:#333;">
-								<span style="color:#FFF;">Welcome <?php echo($_SESSION['username']); ?>!</span>
-							</div>
 							<div id="container">
 								<div id="title">Navigation</div>
 								<br>
@@ -190,7 +246,7 @@
 										<td>
 											<a style="text-decoration:none;" href="?logout">
 												<div id="button">
-													Exit
+													Logout
 												</div>
 											</a>
 										</td>
@@ -215,11 +271,15 @@
 											}
 											echo("<pre>".htmlentities($output['reason'])."</pre>"); // Display the string
 										}
-										if(isset($output['output'])) // If the output was an output message
+										else if(isset($output['output'])) // If the output was an output message
 										{
 											$string = $output['output']; // Set to string
 											$string = str_replace("\n","<br>",$string); // Replace and new lines with a break
 											echo("<pre>".htmlentities($output['output'])."</pre>"); // Display string
+										}
+										else
+										{
+											echo("<pre>Type a command below.<br>Use help for a list of commands.</pre>");
 										}
 									?>
 								</div>
@@ -228,10 +288,19 @@
 								<div id="title">Execute Commands</div>
 								<br>
 								<form action="" method="post">
-									<input style="width:10px;text-align:center;" name="command_prefix" type="text" value="<?php echo($settings['commandPrefix']); ?>" disabled/>
-									<input name="command_text" type="text" placeholder="Enter command here..."/>
-									<input style="width:200px;" name="command_args" type="text" placeholder="Enter command arguments here..."/>
-									<input name="command_send" type="submit" value="Execute"/>
+									<table>
+										<tr>
+											<td>
+												<input id="input" name="command_text" type="text" placeholder="Enter command here..."/>
+											</td>
+											<td>
+												<input id="input" name="command_args" type="text" placeholder="Enter arguments here..."/>
+											</td>
+											<td>
+												<input id="button" name="command_send" type="submit" value="Execute"/>
+											</td>
+										</tr>
+									</table>
 								</form>
 							</div>
 							<?php 

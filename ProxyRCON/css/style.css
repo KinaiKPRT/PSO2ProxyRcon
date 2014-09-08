@@ -1,6 +1,6 @@
 html{
 	font-family:Arial;
-	font-size:16px;
+	font-size:14px;
 	color:#000;
 }
 
@@ -10,12 +10,18 @@ html{
 	text-transform: uppercase;
 	text-decoration: none;
 	color: #FFF;
+
+	font-size: 10px;
+	font-weight: bold;
 	
 	background: #474747;
 	
 	border-bottom: 3px solid #333;
+	border-top: none;
+	border-left: none;
+	border-right: none;
 
-	padding: 5px;
+	padding:7px;
 
 	-webkit-transition: all .5s ease;
 	-moz-transition: all .5s ease;
@@ -34,6 +40,44 @@ html{
 	-ms-transition: all .5s ease;
 	transition: all .5s ease;
 }
+#button:focus{
+	background: #664ea1;
+	
+	border-bottom: 3px solid #333;
+
+	-webkit-transition: all .5s ease;
+	-moz-transition: all .5s ease;
+	-o-transition: all .5s ease;
+	-ms-transition: all .5s ease;
+	transition: all .5s ease;
+}
+
+#input{
+	border-bottom: 1px solid #333;
+	border-top: 1px solid #333;
+	border-left: 1px solid #333;
+	border-right: 1px solid #333;
+
+	text-indent: 5px;
+
+	height: 24px;
+
+	-webkit-transition: all .5s ease;
+	-moz-transition: all .5s ease;
+	-o-transition: all .5s ease;
+	-ms-transition: all .5s ease;
+	transition: all .5s ease;
+}
+#input:focus{
+	background: #474747;
+	color:#FFF;
+
+	-webkit-transition: all .5s ease;
+	-moz-transition: all .5s ease;
+	-o-transition: all .5s ease;
+	-ms-transition: all .5s ease;
+	transition: all .5s ease;
+}
 
 #title{
 	border-bottom: 1px solid #000;
@@ -44,8 +88,8 @@ html{
 }
 
 #container{
-	margin-top:32px;
-	width:475px;
+	margin-top:12px;
+	width:450px;
 	
 	border-radius:5px;
 	padding:20px;

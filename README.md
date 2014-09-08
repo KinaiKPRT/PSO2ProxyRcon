@@ -25,7 +25,6 @@ You will need to change the below variables to connect to your proxy:
 	$settings['host'] = "host";
 	$settings['port'] = "port";
 	$settings['rkey'] = "rcon_key";
-	$settings['commandPrefix'] = "!";
 ```
 
 $settings['host']: Your proxy IP address or host name.
@@ -33,10 +32,6 @@ $settings['host']: Your proxy IP address or host name.
 $settings['port']: Your proxy webAPI port. (Default: 8080)
 <p>
 $settings['rkey']: Your WebRCON key.
-
-
-Only change $settings['commandPrefix'] if you have set a different prefix on your proxy.
-(This does not make any difference regardless, just there to show you your command prefix)
 
 #IMPORTANT:
 
@@ -52,14 +47,16 @@ Example:
 	$user['password'] = "SomePasswordHere1!23";
 ```
 
+The WebRCON login page will leave a warning on the page if you have not changed the preset values.
+
 <b>That is all you need to do! Just upload the files to your web-server!</b>
 
-Configuring Proxy RCON
+Configuring Proxy WebAPI/RCON
 =============
 
-To be able to use WebRCON, you will need to enable to "WebAPI" plugin.
+To be able to use WebRCON, you will need to enable to "WebAPI.py" plugin.
 Simply move the file "WebAPI.py" from the "disabled" folder into the "plugins" folder.
-(Make sure to restart your server to generate the 'webapi.config.yml' file.)
+(Make sure to restart your server to generate the "webapi.config.yml" file.)
 
 Your 'webapi.config.yml' should look somewhat like this:
 
@@ -67,10 +64,10 @@ Your 'webapi.config.yml' should look somewhat like this:
 	{"port": 8080, "ServerName": "Unnamed Server", 'webRconEnabled': false, 'webRconKey': ''}
 ```
 
-You must change the 'webRconEnabled' and 'webRconKey' values:
+You must change the <b>'webRconEnabled'</b> and <b>'webRconKey'</b> values:
 
 ```
-	{"port": 8080, "ServerName": "ProjectGE PSO2Proxy Server", 'webRconEnabled': True, 'webRconKey': 'enter a key here'}
+	{"port": 8080, "ServerName": "Your Server Name Here", 'webRconEnabled': True, 'webRconKey': 'enter a key here'}
 ```
 
 Change 'webRconEnabled' to <b>True</b> and set any key in the 'webRconKey'
@@ -94,3 +91,17 @@ To:
 
 When you open the WebRCON, you will see a new container below the console with all the information pulled from your proxy.
 (This may slow down your WebRCON load speed.)
+
+=============
+
+When you first install WebRCON, you will see a message box telling you about WebRCON.
+
+If you want to stop that message from showing, simply change the following variable:
+```
+	$settings['wrInfo'] = true;
+```
+
+To:
+```
+	$settings['wrInfo'] = false;
+```
